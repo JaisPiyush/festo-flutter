@@ -55,7 +55,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '92720067679',
     projectId: 'ondc-seller-app-prototype',
     authDomain: 'ondc-seller-app-prototype.firebaseapp.com',
-    databaseURL: 'https://ondc-seller-app-prototype-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://ondc-seller-app-prototype-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'ondc-seller-app-prototype.appspot.com',
     measurementId: 'G-0Q2HRGX59J',
   );
@@ -65,7 +66,8 @@ class DefaultFirebaseOptions {
     appId: '1:92720067679:android:e7924e0896fb53727417ea',
     messagingSenderId: '92720067679',
     projectId: 'ondc-seller-app-prototype',
-    databaseURL: 'https://ondc-seller-app-prototype-default-rtdb.asia-southeast1.firebasedatabase.app',
-    storageBucket: 'ondc-seller-app-prototype.appspot.com',
+    databaseURL:
+        'https://ondc-seller-app-prototype-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'vyser-temporary-image-bucket',
   );
 }
