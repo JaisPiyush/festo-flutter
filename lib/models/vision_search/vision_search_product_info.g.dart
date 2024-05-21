@@ -13,7 +13,9 @@ VisionSearchProductInfo _$VisionSearchProductInfoFromJson(
       product_id: json['product_id'] as String,
       display_name: json['display_name'] as String,
       product_category: json['product_category'] as String?,
-      product_labels: json['product_labels'] as Map<String, dynamic>?,
+      product_labels: (json['product_labels'] as List<dynamic>?)
+          ?.map((e) => e as Map<String, dynamic>)
+          .toList(),
     );
 
 Map<String, dynamic> _$VisionSearchProductInfoToJson(

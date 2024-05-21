@@ -1,8 +1,17 @@
+import 'dart:io';
+
+import 'package:festo_app/api/client.dart';
+import 'package:festo_app/secrets.dart' as secrets;
+import 'package:festo_app/views/sales_billing/sales_billing_view.dart';
+import 'package:festo_app/views/vision_search/vision_search_view.dart';
+import 'package:festo_app/views/widgets/bouding_box.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -13,53 +22,65 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primaryColor: Colors.black,
-        scaffoldBackgroundColor: Colors.white,
-        colorScheme: ColorScheme(
-          primary: Colors.black,
-          secondary: Colors.grey[600]!,
-          surface: Colors.white,
-          background: Colors.white,
-          error: Colors.red,
-          onPrimary: Colors.white,
-          onSecondary: Colors.white,
-          onSurface: Colors.black,
-          onBackground: Colors.black,
-          onError: Colors.white,
-          brightness: Brightness.light,
-        ),
-        textTheme: TextTheme(
-          displayLarge: const TextStyle(
-              color: Colors.black, fontSize: 32, fontWeight: FontWeight.bold),
-          displayMedium: const TextStyle(
-              color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
-          displaySmall: const TextStyle(
-              color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
-          titleMedium: TextStyle(color: Colors.grey[700], fontSize: 16),
-          titleSmall: TextStyle(color: Colors.grey[600], fontSize: 14),
-          bodyLarge: const TextStyle(color: Colors.black, fontSize: 14),
-          bodyMedium: TextStyle(color: Colors.grey[800], fontSize: 12),
-          labelLarge: const TextStyle(
-              color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
-          bodySmall: TextStyle(color: Colors.grey[600], fontSize: 12),
-          labelSmall: TextStyle(color: Colors.grey[500], fontSize: 10),
-        ),
-        buttonTheme: const ButtonThemeData(
-          buttonColor: Colors.black,
-          textTheme: ButtonTextTheme.primary,
-        ),
-        appBarTheme: const AppBarTheme(
-          color: Colors.black,
-        ),
-        iconTheme: const IconThemeData(
-          color: Colors.black,
-        ),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+    return RepositoryProvider(
+        create: (context) => ApiClient(secrets.BASE_API_URL, headers: {
+              HttpHeaders.authorizationHeader: secrets.SELLER_AUTH_TOKEN
+            }),
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primaryColor: Colors.black,
+            scaffoldBackgroundColor: Colors.white,
+            colorScheme: ColorScheme(
+              primary: Colors.black,
+              secondary: Colors.grey[600]!,
+              surface: Colors.white,
+              background: Colors.white,
+              error: Colors.red,
+              onPrimary: Colors.white,
+              onSecondary: Colors.white,
+              onSurface: Colors.black,
+              onBackground: Colors.black,
+              onError: Colors.white,
+              brightness: Brightness.light,
+            ),
+            textTheme: TextTheme(
+              displayLarge: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold),
+              displayMedium: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+              displaySmall: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
+              titleMedium: TextStyle(color: Colors.grey[700], fontSize: 16),
+              titleSmall: TextStyle(color: Colors.grey[600], fontSize: 14),
+              bodyLarge: const TextStyle(color: Colors.black, fontSize: 14),
+              bodyMedium: TextStyle(color: Colors.grey[800], fontSize: 12),
+              labelLarge: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold),
+              bodySmall: TextStyle(color: Colors.grey[600], fontSize: 12),
+              labelSmall: TextStyle(color: Colors.grey[500], fontSize: 10),
+            ),
+            buttonTheme: const ButtonThemeData(
+              buttonColor: Colors.black,
+              textTheme: ButtonTextTheme.primary,
+            ),
+            appBarTheme: const AppBarTheme(
+              color: Colors.black,
+            ),
+            iconTheme: const IconThemeData(
+              color: Colors.black,
+            ),
+          ),
+          home: SalesBillingView(),
+        ));
   }
 }
 
@@ -114,34 +135,46 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: VisionSearchView(
+              sourceImageUrl:
+                  "https://storage.googleapis.com/vyser-product-database/maggi-2-minute-noodles/20240517_131238.png",
+              onNextClick: (context) {},
+              getProductCardWidget: (context, sourceImageUrl, resultIndex,
+                  result, matchingCatalogItems,
+                  [selectedCatalogItem]) {
+                return Card(
+                  child: Stack(
+                    children: [
+                      Column(
+                        children: [
+                          Expanded(
+                            child: BoundingBoxWidget(
+                                imageUrl: sourceImageUrl,
+                                boundingPoly: result.bounding_poly),
+                          ),
+                          ListTile(
+                            title: Text(
+                              "Maggie 2 minutes instant noodles",
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          )
+                        ],
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                        ),
+                        style:
+                            IconButton.styleFrom(backgroundColor: Colors.red),
+                      )
+                    ],
+                  ),
+                );
+              })),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',

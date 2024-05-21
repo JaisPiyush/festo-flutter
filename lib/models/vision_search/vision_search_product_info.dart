@@ -8,7 +8,7 @@ class VisionSearchProductInfo {
   final String product_id;
   final String display_name;
   final String? product_category;
-  final Map<String, dynamic>? product_labels;
+  final List<Map<String, dynamic>>? product_labels;
 
   const VisionSearchProductInfo(
       {required this.name,

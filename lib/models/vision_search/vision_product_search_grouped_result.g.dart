@@ -11,8 +11,8 @@ VisionProductSearchGroupedResult _$VisionProductSearchGroupedResultFromJson(
     VisionProductSearchGroupedResult(
       BoundingPoly.fromJson(json['bounding_poly'] as Map<String, dynamic>),
       (json['results'] as List<dynamic>)
-          .map((e) =>
-              VisionSearchProductInfo.fromJson(e as Map<String, dynamic>))
+          .map((e) => VisionSearchProductInfoWithScore.fromJson(
+              e as Map<String, dynamic>))
           .toList(),
     );
 
