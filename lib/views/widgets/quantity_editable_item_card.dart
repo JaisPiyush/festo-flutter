@@ -2,7 +2,7 @@ import 'package:festo_app/models/item.dart';
 import 'package:flutter/material.dart';
 import 'package:input_quantity/input_quantity.dart';
 
-class QuantityEditableItemCard extends StatelessWidget {
+class QuantityEditableItemCard extends StatefulWidget {
   final Item item;
   final void Function(double quantity) onQuantityChange;
   final void Function()? onRemove;
@@ -11,6 +11,20 @@ class QuantityEditableItemCard extends StatelessWidget {
       required this.item,
       required this.onQuantityChange,
       this.onRemove});
+
+  @override
+  State<QuantityEditableItemCard> createState() =>
+      _QuantityEditableItemCardState();
+}
+
+class _QuantityEditableItemCardState extends State<QuantityEditableItemCard> {
+  double quantity = 1;
+
+  @override
+  void initState() {
+    quantity = widget.item.quantity ?? 1;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +40,7 @@ class QuantityEditableItemCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CircleAvatar(
-              child: Image.network(item.images[0]),
+              child: Image.network(widget.item.images[0]),
             ),
             const SizedBox(
               width: 10,
@@ -37,21 +51,21 @@ class QuantityEditableItemCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item.name,
+                    widget.item.name,
                     style: theme.textTheme.displaySmall!.copyWith(fontSize: 14),
                   ),
                   const SizedBox(
                     height: 2,
                   ),
                   Text(
-                    item.brand_name,
+                    widget.item.brand_name,
                     style: theme.textTheme.labelSmall,
                   ),
                   const SizedBox(
                     height: 5,
                   ),
                   Text(
-                    '${item.unit_value}${item.unit_denomination}',
+                    '${widget.item.unit_value}${widget.item.unit_denomination}',
                     style: theme.textTheme.labelSmall,
                   ),
                 ],
@@ -62,7 +76,7 @@ class QuantityEditableItemCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '\u20B9${(item.quantity * (item.selling_price ?? 0)).toStringAsFixed(2)}',
+                  '\u20B9${(quantity * (widget.item.selling_price ?? 0)).toStringAsFixed(2)}',
                   style: theme.textTheme.titleSmall!
                       .copyWith(color: theme.colorScheme.primary),
                 ),
@@ -72,9 +86,13 @@ class QuantityEditableItemCard extends StatelessWidget {
                 InputQty(
                   minVal: 0,
                   steps: 1,
+                  initVal: quantity,
                   onQtyChanged: (val) {
                     final qty = double.parse(val.toString());
-                    onQuantityChange(qty);
+                    setState(() {
+                      quantity = qty;
+                      widget.onQuantityChange(qty);
+                    });
                   },
                   decoration: QtyDecorationProps(
                       border: InputBorder.none,

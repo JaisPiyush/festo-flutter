@@ -16,7 +16,7 @@ class SalesBillingImagePickerVisibleState extends SalesBillingState {}
 class SalesBillingVisionSearchState extends SalesBillingState
     with BaseVisionSearchInitialMixin {}
 
-class SalesBillingErrorState extends SalesBillingState
+class SalesBillingErrorState extends SalesBillingVisionSearchState
     with BaseVisionSearchErrorMixin {
   @override
   final String message;
@@ -101,3 +101,13 @@ class SalesBillingVisionSearchMatchingItemsVisible
         selectedItem
       ];
 }
+
+class SalesBillingVoucherFormVisibleState extends SalesBillingState {
+  final List<Item> items;
+  SalesBillingVoucherFormVisibleState(this.items);
+
+  @override
+  List<Object?> get props => [items];
+}
+
+class SalesBillingVoucherCreationCompleted extends SalesBillingState {}

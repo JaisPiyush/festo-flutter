@@ -1,10 +1,16 @@
+import 'dart:io';
+
 import 'package:festo_app/bloc/sales_billing/sales_billing.state.dart';
 import 'package:festo_app/models/item.dart';
 import 'package:festo_app/models/vision_search/normalized_vertex.dart';
 import 'package:festo_app/models/vision_search/vision_inventory_item_search_response.dart';
 import 'package:festo_app/models/vision_search/vision_search_item_single_result.dart';
 import 'package:festo_app/samples.dart';
+import 'package:festo_app/services/storage.service.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 
 class _BoundingImagesAndItemsRecord {
   final List<BoundingPoly> boundingPoly;
@@ -87,4 +93,27 @@ class SalesBillingCubit extends Cubit<SalesBillingState> {
     showSalesBillingVisionSearchBoundedImageWithBestMatchingItemVisible(
         sourceImageUrl, response, selectedItems);
   }
+
+  void showVoucherCreationForm() {
+    emit(SalesBillingVoucherFormVisibleState(selectedItems.values.toList()));
+  }
+
+  Future<void> uploadImageAndStartVisionSearch(XFile? file) async {
+    emit(SalesBillingLoadingState());
+    if (file == null) {
+      emit(SalesBillingErrorState('Invalid or not image was selected'));
+      return;
+    }
+    final storageService = StorageService();
+    var ref = storageService.getFileStorageRefForUser(Uuid().v4(), file.name);
+    storageService.uploadFile(ref, File(file.path),
+        snapshotEventListener: (snapshot) async {
+      if (snapshot.state == TaskState.success) {
+        final url = await storageService.getDownloadURL(ref);
+        await visionSearchItemsFromInventory(url);
+      }
+    });
+  }
+
+  // Future<void> createSalesVoucher()
 }

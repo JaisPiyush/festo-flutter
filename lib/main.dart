@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
           color: Colors.black,
         ),
       ),
-      home: const AddItemsPage(
+      home: const SalesBillingView(
         imageUrl:
             'https://storage.googleapis.com/vyser-product-database/kurkure-masala-munch-crisps/20240517_132915.png',
       ),

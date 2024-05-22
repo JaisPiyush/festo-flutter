@@ -5,6 +5,7 @@ import 'package:festo_app/views/vision_search/vision_search_view.dart';
 import 'package:festo_app/views/widgets/catalog_item_card.dart';
 import 'package:festo_app/views/widgets/item_card_with_bounded_box.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddItemsVisionProductSelectionView extends StatelessWidget {
   final AddItemsCubit cubit;
@@ -15,7 +16,7 @@ class AddItemsVisionProductSelectionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return VisionSearchView(
-        cubit: cubit,
+        cubit: BlocProvider.of<AddItemsCubit>(context),
         showOnNext: (state) {
           return state is AddItemsVisionSearchBoundedImageVisibleState &&
               state.selectedItems.isNotEmpty;
