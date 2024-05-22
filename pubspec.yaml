@@ -49,6 +49,8 @@ dependencies:
   path: ^1.8.3
   firebase_remote_config: ^4.3.17
   input_quantity: ^2.3.2
+  flutter_chat_ui: ^1.6.13
+  flutter_chat_types: ^3.6.2
 
 dev_dependencies:
   flutter_test:

@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class VisionSearchView<S extends BaseVisionSearchState>
     extends StatelessWidget {
   final Cubit<S> cubit;
-  final Widget Function<T extends BaseVisionSearchResultsVisibleState>(
+  final Widget Function<T extends BaseVisionSearchResultsVisibleMixin>(
       BuildContext context, T state, int index) getResultCard;
   const VisionSearchView(
       {super.key, required this.cubit, required this.getResultCard});
@@ -13,38 +13,35 @@ class VisionSearchView<S extends BaseVisionSearchState>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return RepositoryProvider(
-      create: (context) => cubit,
-      child: BlocBuilder<Cubit<S>, S>(
-        bloc: cubit,
-        builder: (context, state) {
-          if (state is BaseVisionSearchErrorState) {
-            return Center(
-              child: Text(
-                state.message,
-                style: theme.textTheme.bodyMedium!.copyWith(color: Colors.red),
-              ),
-            );
-          } else if (state is BaseVisionSearchResultsVisibleState) {
-            return Column(
-              children: [
-                Expanded(
-                    child: GridView.builder(
-                        itemCount: state.itemCount,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2),
-                        itemBuilder: (context, index) =>
-                            getResultCard(context, state, index)))
-              ],
-            );
-          }
-
-          return const Center(
-            child: CircularProgressIndicator(),
+    return BlocBuilder<Cubit<S>, S>(
+      bloc: cubit,
+      builder: (context, state) {
+        if (state is BaseVisionSearchErrorMixin) {
+          return Center(
+            child: Text(
+              state.message,
+              style: theme.textTheme.bodyMedium!.copyWith(color: Colors.red),
+            ),
           );
-        },
-      ),
+        } else if (state is BaseVisionSearchResultsVisibleMixin) {
+          return Column(
+            children: [
+              Expanded(
+                  child: GridView.builder(
+                      itemCount: state.itemCount,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2),
+                      itemBuilder: (context, index) =>
+                          getResultCard(context, state, index)))
+            ],
+          );
+        }
+
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 }

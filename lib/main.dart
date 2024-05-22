@@ -3,10 +3,9 @@ import 'dart:io';
 import 'package:festo_app/api/client.dart';
 import 'package:festo_app/samples.dart';
 import 'package:festo_app/secrets.dart' as secrets;
+import 'package:festo_app/views/chat/chat_view.dart';
 import 'package:festo_app/views/sales_billing/sales_billing_view.dart';
 import 'package:festo_app/views/sales_billing/voucher_form_view.dart';
-import 'package:festo_app/views/vision_search/vision_search_view.dart';
-import 'package:festo_app/views/widgets/bouding_box.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -81,7 +80,9 @@ class MyApp extends StatelessWidget {
           color: Colors.black,
         ),
       ),
-      home: SalesBillingView(),
+      home: const MyHomePage(
+        title: 'Chat',
+      ),
     );
   }
 }
@@ -136,12 +137,12 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: VoucherFormView(items: sampleItems),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: BottomNavigationBar(items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Greate')
+      ]),
+      body:
+          ChatView(), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

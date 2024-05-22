@@ -10,8 +10,8 @@ InventoryItemVisionSingleSearchResult
     _$InventoryItemVisionSingleSearchResultFromJson(
             Map<String, dynamic> json) =>
         InventoryItemVisionSingleSearchResult(
-          bouding_poly: BoundingPoly.fromJson(
-              json['bouding_poly'] as Map<String, dynamic>),
+          bounding_poly: BoundingPoly.fromJson(
+              json['bounding_poly'] as Map<String, dynamic>),
           results: (json['results'] as List<dynamic>)
               .map((e) => VisionSearchItemSingleResult.fromJson(
                   e as Map<String, dynamic>))
@@ -21,7 +21,7 @@ InventoryItemVisionSingleSearchResult
 Map<String, dynamic> _$InventoryItemVisionSingleSearchResultToJson(
         InventoryItemVisionSingleSearchResult instance) =>
     <String, dynamic>{
-      'bouding_poly': instance.bouding_poly,
+      'bounding_poly': instance.bounding_poly,
       'results': instance.results,
     };
 

@@ -42,24 +42,15 @@ class BaseVisionSearchState extends Equatable {
   List<Object?> get props => [];
 }
 
-class BaseVisionSearchInitialState extends BaseVisionSearchState {}
+mixin BaseVisionSearchInitialMixin on BaseVisionSearchState {}
 
-class BaseVisionSearchLoadingState extends BaseVisionSearchState {}
+mixin BaseVisionSearchLoadingMixin on BaseVisionSearchState {}
 
-class BaseVisionSearchErrorState extends BaseVisionSearchState {
-  final String message;
-  BaseVisionSearchErrorState(this.message);
-
-  @override
-  List<Object?> get props => [message];
+mixin BaseVisionSearchErrorMixin on BaseVisionSearchState {
+  late String message;
 }
 
-class BaseVisionSearchResultsVisibleState extends BaseVisionSearchState {
-  final String sourceImageUrl;
-  final int itemCount;
-  BaseVisionSearchResultsVisibleState(
-      {required this.sourceImageUrl, required this.itemCount});
-
-  @override
-  List<Object?> get props => [sourceImageUrl, itemCount];
+mixin BaseVisionSearchResultsVisibleMixin on BaseVisionSearchState {
+  late String sourceImageUrl;
+  late int itemCount;
 }

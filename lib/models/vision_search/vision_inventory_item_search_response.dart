@@ -7,11 +7,11 @@ part 'vision_inventory_item_search_response.g.dart';
 
 @JsonSerializable()
 class InventoryItemVisionSingleSearchResult {
-  final BoundingPoly bouding_poly;
+  final BoundingPoly bounding_poly;
   final List<VisionSearchItemSingleResult> results;
 
   const InventoryItemVisionSingleSearchResult(
-      {required this.bouding_poly, required this.results});
+      {required this.bounding_poly, required this.results});
 
   factory InventoryItemVisionSingleSearchResult.fromJson(
           Map<String, dynamic> json) =>

@@ -2,14 +2,16 @@ import 'package:festo_app/models/catalog_item.dart';
 import 'package:festo_app/models/item.dart';
 import 'package:festo_app/models/item_category.dart';
 import 'package:festo_app/models/vision_search/normalized_vertex.dart';
+import 'package:festo_app/models/vision_search/vision_inventory_item_search_response.dart';
 import 'package:festo_app/models/vision_search/vision_product_search_grouped_result.dart';
+import 'package:festo_app/models/vision_search/vision_search_item_single_result.dart';
 import 'package:festo_app/models/vision_search/vision_search_product_info.dart';
 import 'package:festo_app/models/vision_search/vision_search_product_info_with_score.dart';
 import 'package:festo_app/models/vision_search/vision_search_response.dart';
 
 List<Item> sampleItems = [
   const Item(
-    product_id: '001',
+    product_id: 'P001',
     product_full_path: '/groceries/vegetables/tomato',
     product_set_id: 'V001',
     sub_categories: ['vegetables', 'fresh produce'],
@@ -34,7 +36,7 @@ List<Item> sampleItems = [
     reorder_level: 10.0,
   ),
   const Item(
-    product_id: '002',
+    product_id: 'P002',
     product_full_path: '/groceries/fruits/apple',
     product_set_id: 'F001',
     sub_categories: ['fruits', 'fresh produce'],
@@ -59,7 +61,7 @@ List<Item> sampleItems = [
     reorder_level: 20.0,
   ),
   const Item(
-    product_id: '003',
+    product_id: 'P002',
     product_full_path: '/groceries/dairy/milk',
     product_set_id: 'D001',
     sub_categories: ['dairy', 'beverages'],
@@ -85,7 +87,7 @@ List<Item> sampleItems = [
   ),
 ];
 
-List<CatalogItem> catalogItems = [
+List<CatalogItem> sampleCatalogItems = [
   const CatalogItem(
     id: 'C001',
     product_id: 'P001',
@@ -170,7 +172,7 @@ List<CatalogItem> catalogItems = [
 ];
 
 // Sample VisionProductSearchGroupedResult instances
-List<VisionProductSearchGroupedResult> visionResults = [
+List<VisionProductSearchGroupedResult> sampleVisionResults = [
   const VisionProductSearchGroupedResult(
     BoundingPoly([
       NormalizedVertex(x: 0.1, y: 0.2),
@@ -222,7 +224,49 @@ List<VisionProductSearchGroupedResult> visionResults = [
 ];
 
 VisionSearchResponse visionSearchResponse =
-    VisionSearchResponse(visionResults, {
-  'P001': [catalogItems[0]],
-  'P002': [catalogItems[1], catalogItems[2]]
+    VisionSearchResponse(sampleVisionResults, {
+  'P001': [sampleCatalogItems[0]],
+  'P002': [sampleCatalogItems[1], sampleCatalogItems[2]]
 });
+
+List<InventoryItemVisionSingleSearchResult> sampleInventoryVisionSearchResult =
+    [
+  InventoryItemVisionSingleSearchResult(
+      bounding_poly: const BoundingPoly([
+        NormalizedVertex(x: 0.1, y: 0.2),
+        NormalizedVertex(x: 0.4, y: 0.2),
+        NormalizedVertex(x: 0.4, y: 0.6),
+        NormalizedVertex(x: 0.1, y: 0.6),
+      ]),
+      results: [
+        VisionSearchItemSingleResult(
+            product_id: sampleCatalogItems[0].product_id,
+            score: 0.95,
+            image: sampleCatalogItems[0].images[0])
+      ]),
+  InventoryItemVisionSingleSearchResult(
+      bounding_poly: const BoundingPoly([
+        NormalizedVertex(x: 0.5, y: 0.3),
+        NormalizedVertex(x: 0.8, y: 0.3),
+        NormalizedVertex(x: 0.8, y: 0.7),
+        NormalizedVertex(x: 0.5, y: 0.7),
+      ]),
+      results: [
+        VisionSearchItemSingleResult(
+            product_id: sampleCatalogItems[1].product_id,
+            score: 0.85,
+            image: sampleCatalogItems[1].images[0]),
+        VisionSearchItemSingleResult(
+            product_id: sampleCatalogItems[0].product_id,
+            score: 0.5,
+            image: sampleCatalogItems[0].images[0])
+      ])
+];
+
+VisionInventoryItemSearchResponse visionInventorySearchResponse =
+    VisionInventoryItemSearchResponse(
+        results: sampleInventoryVisionSearchResult,
+        product_id_to_items_map: {
+      'P001': [sampleItems[0]],
+      'P002': [sampleItems[1], sampleItems[2]]
+    });
