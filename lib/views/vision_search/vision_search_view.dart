@@ -6,8 +6,12 @@ class VisionSearchView<S extends BaseVisionSearchState>
     extends StatelessWidget {
   final Cubit<S> cubit;
   final Widget Function(BuildContext context, S state, int index) getResultCard;
+  final VoidCallback? onNext;
   const VisionSearchView(
-      {super.key, required this.cubit, required this.getResultCard});
+      {super.key,
+      required this.cubit,
+      required this.getResultCard,
+      this.onNext});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,27 @@ class VisionSearchView<S extends BaseVisionSearchState>
                               crossAxisSpacing: 8,
                               mainAxisSpacing: 12),
                       itemBuilder: (context, index) =>
-                          getResultCard(context, state, index)))
+                          getResultCard(context, state, index))),
+              if (onNext != null)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Expanded(
+                          child: ElevatedButton(
+                              onPressed: () {
+                                onNext!();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: theme.primaryColor,
+                                  foregroundColor: theme.colorScheme.background,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8))),
+                              child: Text('Continue')))
+                    ],
+                  ),
+                )
             ],
           );
         }
