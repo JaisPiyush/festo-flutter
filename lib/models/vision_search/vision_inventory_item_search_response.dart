@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:festo_app/models/item.dart';
 import 'package:festo_app/models/vision_search/normalized_vertex.dart';
 import 'package:festo_app/models/vision_search/vision_search_item_single_result.dart';

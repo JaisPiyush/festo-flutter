@@ -5,8 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class VisionSearchView<S extends BaseVisionSearchState>
     extends StatelessWidget {
   final Cubit<S> cubit;
-  final Widget Function<T extends BaseVisionSearchResultsVisibleMixin>(
-      BuildContext context, T state, int index) getResultCard;
+  final Widget Function(BuildContext context, S state, int index) getResultCard;
   const VisionSearchView(
       {super.key, required this.cubit, required this.getResultCard});
 
@@ -29,9 +28,13 @@ class VisionSearchView<S extends BaseVisionSearchState>
               Expanded(
                   child: GridView.builder(
                       itemCount: state.itemCount,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 20),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2),
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 8,
+                              mainAxisSpacing: 12),
                       itemBuilder: (context, index) =>
                           getResultCard(context, state, index)))
             ],

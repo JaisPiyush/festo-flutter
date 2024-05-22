@@ -80,9 +80,7 @@ class MyApp extends StatelessWidget {
           color: Colors.black,
         ),
       ),
-      home: const MyHomePage(
-        title: 'Chat',
-      ),
+      home: const SalesBillingView(),
     );
   }
 }

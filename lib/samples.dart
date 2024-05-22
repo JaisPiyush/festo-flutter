@@ -11,30 +11,29 @@ import 'package:festo_app/models/vision_search/vision_search_response.dart';
 
 List<Item> sampleItems = [
   const Item(
-    product_id: 'P001',
-    product_full_path: '/groceries/vegetables/tomato',
-    product_set_id: 'V001',
-    sub_categories: ['vegetables', 'fresh produce'],
-    name: 'Seared Scallops with Quinoa',
-    images: [
-      'https://storage.googleapis.com/vyser-product-database/kissan-fresh-tomato-ketchup/20240517_132710.png'
-    ],
-    brand_name: 'Farm Fresh',
-    is_selling_price_exclusive_of_gst: true,
-    unit_denomination: 'kg',
-    unit_value: '1',
-    id: 'ITM001',
-    is_returnable: true,
-    seller: 'Local Farmer',
-    quantity: 100.0,
-    symbol: '₹',
-    description: 'Fresh red tomatoes',
-    max_retail_price: 40.0,
-    selling_price: 35.0,
-    item_specific_details: {'organic': true},
-    item_tax_detail: {'GST': 5},
-    reorder_level: 10.0,
-  ),
+      product_id: 'P001',
+      product_full_path: '/groceries/vegetables/tomato',
+      product_set_id: 'V001',
+      sub_categories: ['vegetables', 'fresh produce'],
+      name: 'Seared Scallops with Quinoa',
+      brand_name: 'Farm Fresh',
+      is_selling_price_exclusive_of_gst: true,
+      unit_denomination: 'kg',
+      unit_value: '1',
+      id: 'ITM001',
+      is_returnable: true,
+      seller: 'Local Farmer',
+      quantity: 100.0,
+      symbol: '₹',
+      description: 'Fresh red tomatoes',
+      max_retail_price: 40.0,
+      selling_price: 35.0,
+      item_specific_details: {'organic': true},
+      item_tax_detail: {'GST': 5},
+      reorder_level: 10.0,
+      images: [
+        'https://storage.googleapis.com/vyser-product-database/kurkure-masala-munch-crisps/20240517_132915.png'
+      ]),
   const Item(
     product_id: 'P002',
     product_full_path: '/groceries/fruits/apple',
@@ -263,7 +262,7 @@ List<InventoryItemVisionSingleSearchResult> sampleInventoryVisionSearchResult =
       ])
 ];
 
-VisionInventoryItemSearchResponse visionInventorySearchResponse =
+VisionInventoryItemSearchResponse sampleVisionInventorySearchResponse =
     VisionInventoryItemSearchResponse(
         results: sampleInventoryVisionSearchResult,
         product_id_to_items_map: {

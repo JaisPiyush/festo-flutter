@@ -7,6 +7,8 @@ class BoundingBoxWidget extends StatelessWidget {
 
   BoundingBoxWidget({required this.imageUrl, required this.boundingPoly});
 
+  bool hasImageLoaded = false;
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -31,18 +33,28 @@ class BoundingBoxWidget extends StatelessWidget {
               width: imageWidth,
               height: imageHeight,
               fit: BoxFit.contain,
+              loadingBuilder: (context, child, loadingProgress) {
+                // return Shimmer.fromColors(child: child, baseColor: baseColor, highlightColor: highlightColor)
+                if (loadingProgress == null) {
+                  return child;
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
-            Positioned(
-              left: left,
-              top: top,
-              child: Container(
-                width: boxWidth,
-                height: boxHeight,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.red, width: 2),
+            if (hasImageLoaded)
+              Positioned(
+                left: left,
+                top: top,
+                child: Container(
+                  width: hasImageLoaded ? boxWidth : 0,
+                  height: hasImageLoaded ? boxHeight : 0,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.red, width: 2),
+                  ),
                 ),
               ),
-            ),
           ],
         );
       },
