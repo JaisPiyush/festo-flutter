@@ -39,18 +39,18 @@ CatalogItem _$CatalogItemFromJson(Map<String, dynamic> json) => CatalogItem(
 
 Map<String, dynamic> _$CatalogItemToJson(CatalogItem instance) =>
     <String, dynamic>{
+      'images': instance.images,
+      'name': instance.name,
+      'brand_name': instance.brand_name,
+      'unit_denomination': instance.unit_denomination,
+      'unit_value': instance.unit_value,
       'product_id': instance.product_id,
       'product_full_path': instance.product_full_path,
       'product_set_id': instance.product_set_id,
       'sub_categories': instance.sub_categories,
-      'name': instance.name,
-      'images': instance.images,
-      'brand_name': instance.brand_name,
       'is_selling_price_exclusive_of_gst':
           instance.is_selling_price_exclusive_of_gst,
       'item_tax_detail': instance.item_tax_detail,
-      'unit_denomination': instance.unit_denomination,
-      'unit_value': instance.unit_value,
       'product_reference_images': instance.product_reference_images,
       'is_item_group': instance.is_item_group,
       'id': instance.id,

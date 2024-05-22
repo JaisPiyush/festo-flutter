@@ -2,6 +2,7 @@ import 'package:festo_app/bloc/sales_billing/sales_billing.state.dart';
 import 'package:festo_app/models/item.dart';
 import 'package:festo_app/models/vision_search/normalized_vertex.dart';
 import 'package:festo_app/models/vision_search/vision_inventory_item_search_response.dart';
+import 'package:festo_app/models/vision_search/vision_search_item_single_result.dart';
 import 'package:festo_app/samples.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,9 +27,10 @@ class SalesBillingCubit extends Cubit<SalesBillingState> {
     for (int index = 0; index < response.results.length; index++) {
       InventoryItemVisionSingleSearchResult result = response.results[index];
       polys.add(result.bounding_poly);
-      result.results.sort((a1, a2) => a1.score.compareTo(a2.score));
+      List<VisionSearchItemSingleResult> products = List.from(result.results);
+      products.sort((a1, a2) => a1.score.compareTo(a2.score));
       List<String> productIds =
-          result.results.map((e) => e.product_id).toSet().toList();
+          products.map((e) => e.product_id).toSet().toList();
       List<Item> items = [];
       productIds.forEach((productId) {
         if (response.product_id_to_items_map[productId] != null) {

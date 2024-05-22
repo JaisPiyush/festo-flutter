@@ -1,24 +1,20 @@
+import 'package:festo_app/models/abstract_item.dart';
 import 'package:festo_app/models/item_category.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'catalog_item.g.dart';
 
 @JsonSerializable()
-class CatalogItem {
+class CatalogItem extends AbstractItem {
   final String product_id;
   final String product_full_path;
   final String product_set_id;
   final List<ItemCategory> sub_categories;
-  final String name;
-
-  final List<String> images;
-  final String brand_name;
 
   final bool is_selling_price_exclusive_of_gst;
 
   final Map<String, dynamic>? item_tax_detail;
-  final String unit_denomination;
-  final String unit_value;
+
   final List<String> product_reference_images;
   final bool is_item_group;
 
@@ -37,13 +33,13 @@ class CatalogItem {
       required this.product_full_path,
       required this.product_set_id,
       required this.sub_categories,
-      required this.name,
-      required this.images,
-      required this.brand_name,
+      required super.name,
+      required super.images,
+      required super.brand_name,
       required this.is_selling_price_exclusive_of_gst,
       required this.item_tax_detail,
-      required this.unit_denomination,
-      required this.unit_value,
+      required super.unit_denomination,
+      required super.unit_value,
       required this.product_reference_images,
       required this.is_item_group,
       this.symbol,

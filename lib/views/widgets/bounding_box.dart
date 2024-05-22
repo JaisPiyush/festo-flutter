@@ -26,36 +26,34 @@ class BoundingBoxWidget extends StatelessWidget {
         final double boxWidth = right - left;
         final double boxHeight = bottom - top;
 
-        return Stack(
-          children: [
-            Image.network(
-              imageUrl,
-              width: imageWidth,
-              height: imageHeight,
-              fit: BoxFit.contain,
-              loadingBuilder: (context, child, loadingProgress) {
-                // return Shimmer.fromColors(child: child, baseColor: baseColor, highlightColor: highlightColor)
-                if (loadingProgress == null) {
-                  return child;
-                }
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
-            ),
-            if (hasImageLoaded)
-              Positioned(
-                left: left,
-                top: top,
-                child: Container(
-                  width: hasImageLoaded ? boxWidth : 0,
-                  height: hasImageLoaded ? boxHeight : 0,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.red, width: 2),
+        return Image.network(
+          imageUrl,
+          width: imageWidth,
+          height: imageHeight,
+          fit: BoxFit.contain,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress != null) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return Stack(
+              children: [
+                child,
+                Positioned(
+                  left: left,
+                  top: top,
+                  child: Container(
+                    width: boxWidth,
+                    height: boxHeight,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.red, width: 2),
+                    ),
                   ),
                 ),
-              ),
-          ],
+              ],
+            );
+          },
         );
       },
     );

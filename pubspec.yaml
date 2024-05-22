@@ -51,6 +51,7 @@ dependencies:
   input_quantity: ^2.3.2
   flutter_chat_ui: ^1.6.13
   flutter_chat_types: ^3.6.2
+  accordion: ^2.6.0
 
 dev_dependencies:
   flutter_test:

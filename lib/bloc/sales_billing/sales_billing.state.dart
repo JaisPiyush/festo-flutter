@@ -13,6 +13,9 @@ class SalesBillingLoadingState extends SalesBillingState {}
 
 class SalesBillingImagePickerVisibleState extends SalesBillingState {}
 
+class SalesBillingVisionSearchState extends SalesBillingState
+    with BaseVisionSearchInitialMixin {}
+
 class SalesBillingErrorState extends SalesBillingState
     with BaseVisionSearchErrorMixin {
   @override
@@ -22,9 +25,6 @@ class SalesBillingErrorState extends SalesBillingState
   @override
   List<Object?> get props => [message];
 }
-
-class SalesBillingVisionSearchState extends SalesBillingState
-    with BaseVisionSearchInitialMixin {}
 
 class SalesBillingVisionSearchingProductState
     extends SalesBillingVisionSearchState with BaseVisionSearchLoadingMixin {

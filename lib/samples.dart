@@ -222,7 +222,7 @@ List<VisionProductSearchGroupedResult> sampleVisionResults = [
   ),
 ];
 
-VisionSearchResponse visionSearchResponse =
+VisionSearchResponse sampleVisionSearchResponse =
     VisionSearchResponse(sampleVisionResults, {
   'P001': [sampleCatalogItems[0]],
   'P002': [sampleCatalogItems[1], sampleCatalogItems[2]]

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:festo_app/api/client.dart';
 import 'package:festo_app/samples.dart';
 import 'package:festo_app/secrets.dart' as secrets;
+import 'package:festo_app/views/add_items/add_items_view.dart';
 import 'package:festo_app/views/chat/chat_view.dart';
 import 'package:festo_app/views/sales_billing/sales_billing_view.dart';
 import 'package:festo_app/views/sales_billing/voucher_form_view.dart';
@@ -80,7 +81,10 @@ class MyApp extends StatelessWidget {
           color: Colors.black,
         ),
       ),
-      home: const SalesBillingView(),
+      home: const AddItemsPage(
+        imageUrl:
+            'https://storage.googleapis.com/vyser-product-database/kurkure-masala-munch-crisps/20240517_132915.png',
+      ),
     );
   }
 }

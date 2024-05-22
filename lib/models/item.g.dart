@@ -7,7 +7,7 @@ part of 'item.dart';
 // **************************************************************************
 
 Item _$ItemFromJson(Map<String, dynamic> json) => Item(
-      id: json['id'] as String,
+      id: json['id'] as String?,
       product_id: json['product_id'] as String,
       product_full_path: json['product_full_path'] as String,
       product_set_id: json['product_set_id'] as String,
@@ -24,7 +24,7 @@ Item _$ItemFromJson(Map<String, dynamic> json) => Item(
       unit_denomination: json['unit_denomination'] as String,
       unit_value: json['unit_value'] as String,
       is_returnable: json['is_returnable'] as bool,
-      seller: json['seller'] as String,
+      seller: json['seller'] as String?,
       quantity: (json['quantity'] as num).toDouble(),
       symbol: json['symbol'] as String?,
       description: json['description'] as String?,
@@ -36,17 +36,17 @@ Item _$ItemFromJson(Map<String, dynamic> json) => Item(
     );
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
+      'images': instance.images,
+      'name': instance.name,
+      'brand_name': instance.brand_name,
+      'unit_denomination': instance.unit_denomination,
+      'unit_value': instance.unit_value,
       'product_id': instance.product_id,
       'product_full_path': instance.product_full_path,
       'product_set_id': instance.product_set_id,
       'sub_categories': instance.sub_categories,
-      'name': instance.name,
-      'images': instance.images,
-      'brand_name': instance.brand_name,
       'is_selling_price_exclusive_of_gst':
           instance.is_selling_price_exclusive_of_gst,
-      'unit_denomination': instance.unit_denomination,
-      'unit_value': instance.unit_value,
       'id': instance.id,
       'is_returnable': instance.is_returnable,
       'seller': instance.seller,

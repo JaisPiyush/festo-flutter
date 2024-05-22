@@ -1,4 +1,4 @@
-import 'package:festo_app/models/item.dart';
+import 'package:festo_app/models/abstract_item.dart';
 import 'package:festo_app/models/vision_search/normalized_vertex.dart';
 import 'package:festo_app/views/widgets/bounding_box.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class ItemCardWithBoundedBox extends StatelessWidget {
   final String sourceImageUrl;
   final BoundingPoly boundingPoly;
-  final Item? selectedItem;
+  final AbstractItem? selectedItem;
   final VoidCallback? onClick;
   final VoidCallback? onRemoveClick;
 

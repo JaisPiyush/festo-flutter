@@ -22,8 +22,13 @@ class _SalesBillingViewState extends State<SalesBillingView> {
         appBar: AppBar(
           title: const Text('Sales'),
           backgroundColor: Colors.white,
-          leading:
-              IconButton(onPressed: () {}, icon: const Icon(Icons.arrow_back)),
+          leading: IconButton(
+              onPressed: () {
+                if (Navigator.canPop(context)) {
+                  Navigator.of(context).pop();
+                }
+              },
+              icon: const Icon(Icons.arrow_back)),
         ),
         body: RepositoryProvider(
           create: (context) {
@@ -61,7 +66,7 @@ class _SalesBillingViewState extends State<SalesBillingView> {
                       item: item,
                       isSelected: state.selectedItem == item,
                       onClick: () {
-                        cubit.selectedItems[index] = item;
+                        cubit.selectedItems[state.boundedImageIndex] = item;
                         cubit
                             .showSalesBillingVisionSearchBoundedImageWithBestMatchingItemVisible(
                                 state.sourceImageUrl,

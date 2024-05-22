@@ -6,11 +6,13 @@ class VisionSearchView<S extends BaseVisionSearchState>
     extends StatelessWidget {
   final Cubit<S> cubit;
   final Widget Function(BuildContext context, S state, int index) getResultCard;
+  final bool Function(S state)? showOnNext;
   final VoidCallback? onNext;
   const VisionSearchView(
       {super.key,
       required this.cubit,
       required this.getResultCard,
+      this.showOnNext,
       this.onNext});
 
   @override
@@ -20,6 +22,8 @@ class VisionSearchView<S extends BaseVisionSearchState>
       bloc: cubit,
       builder: (context, state) {
         if (state is BaseVisionSearchErrorMixin) {
+          final snack = SnackBar(content: Text(state.message));
+          ScaffoldMessenger.of(context).showSnackBar(snack);
           return Center(
             child: Text(
               state.message,
@@ -41,7 +45,7 @@ class VisionSearchView<S extends BaseVisionSearchState>
                               mainAxisSpacing: 12),
                       itemBuilder: (context, index) =>
                           getResultCard(context, state, index))),
-              if (onNext != null)
+              if (onNext != null && showOnNext != null && showOnNext!(state))
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -72,106 +76,3 @@ class VisionSearchView<S extends BaseVisionSearchState>
     );
   }
 }
-
-
-// typedef OnNextClickFunction = void Function(BuildContext context);
-// typedef GetProductCardWidget = Widget Function(
-//     BuildContext context,
-//     String sourceImageUrl,
-//     int resultIndex,
-//     VisionProductSearchGroupedResult result,
-//     Map<String, List<CatalogItem>> matchingCatalogItems,
-//     [CatalogItem? selectedCatalogItem]);
-
-// class VisionSearchView extends StatelessWidget {
-//   final String sourceImageUrl;
-//   final OnNextClickFunction onNextClick;
-//   final GetProductCardWidget getProductCardWidget;
-//   const VisionSearchView(
-//       {super.key,
-//       required this.sourceImageUrl,
-//       required this.onNextClick,
-//       required this.getProductCardWidget});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final client = RepositoryProvider.of<ApiClient>(context);
-//     final cubit = VisionSearchCubit(sourceImageUrl, client);
-
-//     return RepositoryProvider(
-//       create: (context) {
-//         cubit.visionSearch();
-//         return cubit;
-//       },
-//       child: _VisionSearchViewBlocConsumer(
-//           onNextClick: onNextClick, getProductCardWidget: getProductCardWidget),
-//     );
-//   }
-// }
-
-// class _VisionSearchViewBlocConsumer extends StatelessWidget {
-//   final OnNextClickFunction onNextClick;
-//   final GetProductCardWidget getProductCardWidget;
-//   const _VisionSearchViewBlocConsumer(
-//       {super.key,
-//       required this.onNextClick,
-//       required this.getProductCardWidget});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final theme = Theme.of(context);
-//     return Container(
-//       child: BlocBuilder<VisionSearchCubit, VisionSearchState>(
-//           bloc: RepositoryProvider.of<VisionSearchCubit>(context),
-//           builder: (context, state) {
-            // if (state is VisionSearchErrorState) {
-            //   return Center(
-            //     child: Text(
-            //       state.errorMessage,
-            //       style:
-            //           theme.textTheme.bodyMedium!.copyWith(color: Colors.red),
-            //     ),
-            //   );
-            // } else if (state is VisionSearchResultVisibleState) {
-//               return Column(
-//                 children: [
-//                   Expanded(
-//                     child: GridView.builder(
-//                       itemCount: state.results.length,
-//                       gridDelegate:
-//                           const SliverGridDelegateWithFixedCrossAxisCount(
-//                               crossAxisCount: 2),
-//                       itemBuilder: (context, index) {
-//                         return getProductCardWidget(
-//                             context,
-//                             state.sourceImageUrl,
-//                             index,
-//                             state.results[index],
-//                             state.matchingCatalogItems,
-//                             state.selectedCatalogItem[index]);
-//                       },
-//                     ),
-//                   ),
-//                   Padding(
-//                     padding: const EdgeInsets.symmetric(horizontal: 8),
-//                     child: Row(
-//                       children: [
-//                         Expanded(
-//                             child: ElevatedButton(
-//                                 onPressed: () {
-//                                   onNextClick(context);
-//                                 },
-//                                 child: const Text('Continue')))
-//                       ],
-//                     ),
-//                   )
-//                 ],
-//               );
-//             }
-//             return const Center(
-//               child: CircularProgressIndicator(),
-//             );
-//           }),
-//     );
-//   }
-// }
