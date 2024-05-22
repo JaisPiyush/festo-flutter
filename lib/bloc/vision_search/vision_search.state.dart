@@ -36,3 +36,30 @@ class VisionSearchResultVisibleState extends VisionSearchState {
   List<Object?> get props =>
       [sourceImageUrl, results, matchingCatalogItems, selectedCatalogItem];
 }
+
+class BaseVisionSearchState extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
+
+class BaseVisionSearchInitialState extends BaseVisionSearchState {}
+
+class BaseVisionSearchLoadingState extends BaseVisionSearchState {}
+
+class BaseVisionSearchErrorState extends BaseVisionSearchState {
+  final String message;
+  BaseVisionSearchErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class BaseVisionSearchResultsVisibleState extends BaseVisionSearchState {
+  final String sourceImageUrl;
+  final int itemCount;
+  BaseVisionSearchResultsVisibleState(
+      {required this.sourceImageUrl, required this.itemCount});
+
+  @override
+  List<Object?> get props => [sourceImageUrl, itemCount];
+}
