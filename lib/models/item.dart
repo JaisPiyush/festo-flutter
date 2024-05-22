@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+part 'item.g.dart';
+
 @JsonSerializable()
 class Item {
   final String product_id;
@@ -51,51 +53,14 @@ class Item {
       this.reorder_level,
       this.item_specific_details});
 
-  Item.fromJson(Map<String, dynamic> json)
-      : product_id = json['product_id'],
-        product_full_path = json['product_full_path'],
-        product_set_id = json['product_set_id'],
-        sub_categories = json['sub_categories'],
-        name = json['name'],
-        images = json['images'],
-        brand_name = json['brand_name'],
-        is_selling_price_exclusive_of_gst =
-            json['is_selling_price_exclusive_of_gst'],
-        unit_denomination = json['unit_denomination'],
-        unit_value = json['unit_value'],
-        id = json['id'],
-        is_returnable = json['is_returnable'],
-        seller = json['seller'],
-        quantity = double.parse(json['quantity']),
-        symbol = json['symbol'],
-        description = json['description'],
-        max_retail_price = double.parse(json['max_retail_price'] ?? '0'),
-        selling_price = double.parse(json['selling_price'] ?? '0'),
-        item_specific_details = json['item_specific_details'],
-        item_tax_detail = json['item_tax_detail'],
-        reorder_level = double.parse(json['reorder_level'] ?? '0');
+  factory Item.fromJson(Map<String, dynamic> json) {
+    json['double'] = double.parse(json['double']);
+    json['max_retail_price'] ??= double.parse(json['max_retail_price']);
+    json['selling_price'] ??= double.parse(json['selling_price']);
+    json['reorder_level'] ??= double.parse(json['reorder_level']);
 
-  Map<String, dynamic> toJson() => {
-        "product_id": product_id,
-        "product_full_path": product_full_path,
-        "product_set_id": product_set_id,
-        "sub_categories": sub_categories,
-        "name": name,
-        "images": images,
-        "brand_name": brand_name,
-        "is_selling_price_exclusive_of_gst": is_selling_price_exclusive_of_gst,
-        "unit_denomination": unit_denomination,
-        "unit_value": unit_value,
-        "id": id,
-        "is_returnable": is_returnable,
-        "seller": seller,
-        "quantity": quantity,
-        "symbol": symbol,
-        "description": description,
-        "max_retail_price": max_retail_price,
-        "selling_price": selling_price,
-        "item_specific_details": item_specific_details,
-        "item_tax_detail": item_tax_detail,
-        "reorder_level": reorder_level
-      };
+    return _$ItemFromJson(json);
+  }
+
+  Map<String, dynamic> toJson() => _$ItemToJson(this);
 }

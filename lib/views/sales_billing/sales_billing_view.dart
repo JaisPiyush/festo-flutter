@@ -1,3 +1,5 @@
+import 'package:festo_app/samples.dart';
+import 'package:festo_app/views/sales_billing/voucher_form_view.dart';
 import 'package:festo_app/views/widgets/image_picker_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -19,12 +21,7 @@ class _SalesBillingViewState extends State<SalesBillingView> {
           leading:
               IconButton(onPressed: () {}, icon: const Icon(Icons.arrow_back)),
         ),
-        body: Center(
-          child: ImagePickerWidget(
-            title: 'Select image for creating order',
-            onImagePick: (image) {},
-          ),
-        ),
+        body: VoucherFormView(items: sampleItems),
       ),
     );
   }

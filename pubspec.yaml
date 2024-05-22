@@ -47,6 +47,8 @@ dependencies:
   flutter_svg: ^2.0.10+1
   image_picker: ^1.0.8
   path: ^1.8.3
+  firebase_remote_config: ^4.3.17
+  input_quantity: ^2.3.2
 
 dev_dependencies:
   flutter_test:

@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:festo_app/api/client.dart';
+import 'package:festo_app/samples.dart';
 import 'package:festo_app/secrets.dart' as secrets;
 import 'package:festo_app/views/sales_billing/sales_billing_view.dart';
+import 'package:festo_app/views/sales_billing/voucher_form_view.dart';
 import 'package:festo_app/views/vision_search/vision_search_view.dart';
 import 'package:festo_app/views/widgets/bouding_box.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,72 +18,71 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  final remoteConfig = FirebaseRemoteConfig.instance;
+  await remoteConfig.setConfigSettings(RemoteConfigSettings(
+    fetchTimeout: const Duration(minutes: 1),
+    minimumFetchInterval: const Duration(minutes: 30),
+  ));
+  final BASE_FESTO_API_URL = remoteConfig.getString('BASE_FESTO_API_URL');
+  runApp(MultiRepositoryProvider(providers: [
+    RepositoryProvider<ApiClient>(
+        create: (context) => ApiClient(BASE_FESTO_API_URL, headers: {
+              HttpHeaders.authorizationHeader: secrets.SELLER_AUTH_TOKEN
+            }))
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-        create: (context) => ApiClient(secrets.BASE_API_URL, headers: {
-              HttpHeaders.authorizationHeader: secrets.SELLER_AUTH_TOKEN
-            }),
-        child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            primaryColor: Colors.black,
-            scaffoldBackgroundColor: Colors.white,
-            colorScheme: ColorScheme(
-              primary: Colors.black,
-              secondary: Colors.grey[600]!,
-              surface: Colors.white,
-              background: Colors.white,
-              error: Colors.red,
-              onPrimary: Colors.white,
-              onSecondary: Colors.white,
-              onSurface: Colors.black,
-              onBackground: Colors.black,
-              onError: Colors.white,
-              brightness: Brightness.light,
-            ),
-            textTheme: TextTheme(
-              displayLarge: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold),
-              displayMedium: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-              displaySmall: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold),
-              titleMedium: TextStyle(color: Colors.grey[700], fontSize: 16),
-              titleSmall: TextStyle(color: Colors.grey[600], fontSize: 14),
-              bodyLarge: const TextStyle(color: Colors.black, fontSize: 14),
-              bodyMedium: TextStyle(color: Colors.grey[800], fontSize: 12),
-              labelLarge: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold),
-              bodySmall: TextStyle(color: Colors.grey[600], fontSize: 12),
-              labelSmall: TextStyle(color: Colors.grey[500], fontSize: 10),
-            ),
-            buttonTheme: const ButtonThemeData(
-              buttonColor: Colors.black,
-              textTheme: ButtonTextTheme.primary,
-            ),
-            appBarTheme: const AppBarTheme(
-              color: Colors.black,
-            ),
-            iconTheme: const IconThemeData(
-              color: Colors.black,
-            ),
-          ),
-          home: SalesBillingView(),
-        ));
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primaryColor: Colors.black,
+        scaffoldBackgroundColor: const Color(0xfff2f2f2),
+        colorScheme: ColorScheme(
+          primary: Colors.black,
+          secondary: Colors.grey[600]!,
+          surface: Colors.white,
+          background: Colors.white,
+          error: Colors.red,
+          onPrimary: Colors.white,
+          onSecondary: Colors.white,
+          onSurface: Colors.black,
+          onBackground: Colors.black,
+          onError: Colors.white,
+          brightness: Brightness.light,
+        ),
+        textTheme: TextTheme(
+          displayLarge: const TextStyle(
+              color: Colors.black, fontSize: 32, fontWeight: FontWeight.bold),
+          displayMedium: const TextStyle(
+              color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+          displaySmall: const TextStyle(
+              color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+          titleMedium: TextStyle(color: Colors.grey[700], fontSize: 16),
+          titleSmall: TextStyle(color: Colors.grey[600], fontSize: 14),
+          bodyLarge: const TextStyle(color: Colors.black, fontSize: 14),
+          bodyMedium: TextStyle(color: Colors.grey[800], fontSize: 12),
+          labelLarge: const TextStyle(
+              color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+          bodySmall: TextStyle(color: Colors.grey[600], fontSize: 12),
+          labelSmall: TextStyle(color: Colors.grey[500], fontSize: 10),
+        ),
+        buttonTheme: const ButtonThemeData(
+          buttonColor: Colors.black,
+          textTheme: ButtonTextTheme.primary,
+        ),
+        appBarTheme: const AppBarTheme(
+          color: Colors.black,
+        ),
+        iconTheme: const IconThemeData(
+          color: Colors.black,
+        ),
+      ),
+      home: SalesBillingView(),
+    );
   }
 }
 
@@ -134,47 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-          child: VisionSearchView(
-              sourceImageUrl:
-                  "https://storage.googleapis.com/vyser-product-database/maggi-2-minute-noodles/20240517_131238.png",
-              onNextClick: (context) {},
-              getProductCardWidget: (context, sourceImageUrl, resultIndex,
-                  result, matchingCatalogItems,
-                  [selectedCatalogItem]) {
-                return Card(
-                  child: Stack(
-                    children: [
-                      Column(
-                        children: [
-                          Expanded(
-                            child: BoundingBoxWidget(
-                                imageUrl: sourceImageUrl,
-                                boundingPoly: result.bounding_poly),
-                          ),
-                          ListTile(
-                            title: Text(
-                              "Maggie 2 minutes instant noodles",
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          )
-                        ],
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.close,
-                          color: Colors.white,
-                        ),
-                        style:
-                            IconButton.styleFrom(backgroundColor: Colors.red),
-                      )
-                    ],
-                  ),
-                );
-              })),
+      body: VoucherFormView(items: sampleItems),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
