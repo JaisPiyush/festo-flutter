@@ -1,3 +1,4 @@
+import 'package:festo_app/api/client.dart';
 import 'package:festo_app/bloc/sales_billing/sales_billing.cubit.dart';
 import 'package:festo_app/bloc/sales_billing/sales_billing.state.dart';
 import 'package:festo_app/routes.dart';
@@ -20,7 +21,7 @@ class SalesBillingView extends StatefulWidget {
 class _SalesBillingViewState extends State<SalesBillingView> {
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings?.arguments
+    final args = ModalRoute.of(context)?.settings.arguments
         as SalesBillingViewRouteArgs?;
     final _imageUrl = widget.imageUrl ?? args?.imageUrl;
     return SafeArea(
@@ -38,7 +39,8 @@ class _SalesBillingViewState extends State<SalesBillingView> {
         ),
         body: BlocProvider(
           create: (context) {
-            final cubit = SalesBillingCubit();
+            final cubit =
+                SalesBillingCubit(RepositoryProvider.of<ApiClient>(context));
             if (_imageUrl != null) {
               cubit.visionSearchItemsFromInventory(_imageUrl);
             }

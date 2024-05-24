@@ -15,10 +15,23 @@ class VoucherFormView extends StatefulWidget {
 class _VoucherFormViewState extends State<VoucherFormView> {
   late IndexBasedRecordController<double> _quantityController;
 
+  late List<Item> salableItems;
+
   @override
   void initState() {
+    Map<String, double> quantityOfEachItem = {};
+
+    widget.items.forEach((item) {
+      if (quantityOfEachItem[item.id] == null) {
+        quantityOfEachItem[item.id!] = 1.0;
+        salableItems.add(item);
+      } else {
+        quantityOfEachItem[item.id!] = quantityOfEachItem[item.id!]! + 1.0;
+      }
+    });
+
     _quantityController = IndexBasedRecordController.fromList(
-        widget.items.map((e) => 1.0).toList());
+        salableItems.map((e) => quantityOfEachItem[e.id!] ?? 1.0).toList());
     _quantityController.addListener(() {
       setState(() {});
     });
@@ -33,8 +46,8 @@ class _VoucherFormViewState extends State<VoucherFormView> {
 
   double getTotalSum() {
     double sum = 0;
-    for (int index = 0; index < widget.items.length; index++) {
-      sum += (widget.items[index].selling_price ?? 0) *
+    for (int index = 0; index < salableItems.length; index++) {
+      sum += (salableItems[index].selling_price ?? 0) *
           (_quantityController.record[index] ?? 0);
     }
     return sum;
@@ -49,9 +62,9 @@ class _VoucherFormViewState extends State<VoucherFormView> {
             child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListView.builder(
-              itemCount: widget.items.length,
+              itemCount: salableItems.length,
               itemBuilder: (context, index) => QuantityEditableItemCard(
-                  item: widget.items[index],
+                  item: salableItems[index],
                   onQuantityChange: (quantity) {
                     _quantityController.setRecord(index, quantity);
                   },

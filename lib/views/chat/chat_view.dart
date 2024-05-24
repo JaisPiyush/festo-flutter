@@ -16,18 +16,19 @@ class _ChatViewState extends State<ChatView> {
   @override
   Widget build(BuildContext context) {
     return Chat(
-        messages: messages,
-        onSendPressed: (text) {
-          final message = types.TextMessage(
-              author: user2,
-              id: text.text,
-              text: text.text,
-              metadata: text.metadata,
-              repliedMessage: text.repliedMessage);
-          setState(() {
-            messages.insert(0, message);
-          });
-        },
-        user: user);
+      messages: messages,
+      onSendPressed: (text) {
+        final message = types.TextMessage(
+            author: user2,
+            id: text.text,
+            text: text.text,
+            metadata: text.metadata,
+            repliedMessage: text.repliedMessage);
+        setState(() {
+          messages.insert(0, message);
+        });
+      },
+      user: user,
+    );
   }
 }

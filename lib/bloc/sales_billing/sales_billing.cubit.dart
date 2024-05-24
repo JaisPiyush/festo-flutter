@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
+import 'package:festo_app/api/client.dart';
+import 'package:festo_app/api/item.dart';
 import 'package:festo_app/bloc/sales_billing/sales_billing.state.dart';
 import 'package:festo_app/models/item.dart';
 import 'package:festo_app/models/vision_search/normalized_vertex.dart';
@@ -20,7 +23,8 @@ class _BoundingImagesAndItemsRecord {
 }
 
 class SalesBillingCubit extends Cubit<SalesBillingState> {
-  SalesBillingCubit() : super(SalesBillingInitialState());
+  final ApiClient client;
+  SalesBillingCubit(this.client) : super(SalesBillingInitialState());
 
   late String sourceImageUrl;
   late VisionInventoryItemSearchResponse response;
@@ -88,10 +92,15 @@ class SalesBillingCubit extends Cubit<SalesBillingState> {
   Future<void> visionSearchItemsFromInventory(String sourceImageUrl_) async {
     sourceImageUrl = sourceImageUrl_;
     emit(SalesBillingVisionSearchingProductState(sourceImageUrl));
-    response = sampleVisionInventorySearchResponse;
-    //todo: implement api search
-    showSalesBillingVisionSearchBoundedImageWithBestMatchingItemVisible(
-        sourceImageUrl, response, selectedItems);
+    try {
+      final itemAPIClient = ItemAPIClient(client);
+      response = await itemAPIClient.visionSearchInventory(sourceImageUrl);
+      showSalesBillingVisionSearchBoundedImageWithBestMatchingItemVisible(
+          sourceImageUrl, response, selectedItems);
+    } on DioException catch (e) {
+      emit(SalesBillingErrorState(
+          e.response?.data.toString() ?? 'Unknown error'));
+    }
   }
 
   void showVoucherCreationForm() {
@@ -111,6 +120,8 @@ class SalesBillingCubit extends Cubit<SalesBillingState> {
       if (snapshot.state == TaskState.success) {
         final url = await storageService.getDownloadURL(ref);
         await visionSearchItemsFromInventory(url);
+      } else if (snapshot.state == TaskState.error) {
+        emit(SalesBillingErrorState('Unknown error while uploading file'));
       }
     });
   }

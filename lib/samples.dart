@@ -269,3 +269,28 @@ VisionInventoryItemSearchResponse sampleVisionInventorySearchResponse =
       'P001': [sampleItems[0]],
       'P002': [sampleItems[1], sampleItems[2]]
     });
+
+var sampleRawMessage = {
+  "context": {
+    "payload": {
+      "image":
+          'https://storage.googleapis.com/vyser-product-database/kurkure-masala-munch-crisps/20240517_132915.png'
+    },
+    "user": {"id": "vyser-chatbot", "isSentByUser": false}
+  },
+  "richContent": [
+    {
+      "rawUrl":
+          'https://storage.googleapis.com/vyser-product-database/kurkure-masala-munch-crisps/20240517_132915.png',
+      "type": "image"
+    },
+    {
+      "options": [
+        {"title": "Add Items", "actionId": "addItems"},
+        {"title": "Edit Items", "actionId": "ediItems"},
+        {"title": "Search Items", "actionId": "searchItems"}
+      ],
+      "type": "chips"
+    }
+  ]
+};
