@@ -30,6 +30,7 @@ class SalesBillingCubit extends Cubit<SalesBillingState> {
   late VisionInventoryItemSearchResponse response;
   late Map<int, Item> selectedItems = {};
 
+
   _BoundingImagesAndItemsRecord getBoundingPolyToItemMapFromResponse(
       VisionInventoryItemSearchResponse response) {
     Map<int, List<Item>> matchingItems = {};
@@ -51,6 +52,12 @@ class SalesBillingCubit extends Cubit<SalesBillingState> {
     }
 
     return _BoundingImagesAndItemsRecord(polys, matchingItems);
+  }
+
+  void showImagePicker() {
+    emit(
+      SalesBillingImagePickerVisibleState()
+    );
   }
 
   void showSalesBillingVisionSearchBoundedImageWithBestMatchingItemVisible(

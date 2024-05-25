@@ -25,7 +25,10 @@ class StorageService {
   }
 
   Future<String> getDownloadURL(Reference ref) async {
-    return await ref.getDownloadURL();
+    const baseUrl = 'https://storage.googleapis.com';
+    final url = '$baseUrl/${ref.fullPath}';
+    return url;
+    // return await ref.getDownloadURL();
   }
 
   Future<void> deleteFile(Reference ref) async {

@@ -20,6 +20,8 @@ Future<void> main() async {
     fetchTimeout: const Duration(minutes: 1),
     minimumFetchInterval: const Duration(minutes: 30),
   ));
+  await remoteConfig.fetchAndActivate();
+  // await remoteConfig.ensureInitialized();
   final BASE_FESTO_API_URL = remoteConfig.getString('BASE_FESTO_API_URL');
   runApp(MultiRepositoryProvider(providers: [
     RepositoryProvider<ApiClient>(
