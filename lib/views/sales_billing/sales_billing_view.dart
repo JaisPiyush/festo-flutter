@@ -43,6 +43,8 @@ class _SalesBillingViewState extends State<SalesBillingView> {
                 SalesBillingCubit(RepositoryProvider.of<ApiClient>(context));
             if (_imageUrl != null) {
               cubit.visionSearchItemsFromInventory(_imageUrl);
+            } else {
+              cubit.showImagePicker();
             }
             return cubit;
           },
